@@ -1,14 +1,134 @@
-import * as React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
+import { rgba } from 'polished'
 
 /**
  * components
  */
 import Header from './header/Header'
 
+/**
+ * styled
+ */
+const Image = styled.img`
+  max-width: 10rem;
+  max-height: 10rem;
+  min-width: 10rem;
+  min-height: 10rem;
+  object-fit: cover;
+`
+
+const TopRankConatiner = styled.div`
+  display: flex;
+  justify-content: space-around;
+  margin: 1rem 0;
+`
+
+const TopRankContent = styled.div`
+  position: relative;
+`
+
+const FirstRank = styled.h2`
+  padding: 1rem 1rem 3rem 1rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: table;
+  font-weight: bold;
+  -webkit-text-stroke: 0.5px #000;
+  color: #fff;
+  background-color: ${(props) => rgba(props.theme.colors.gold, 0.7)};
+`
+const SecondRank = styled.h2`
+  padding: 1rem 1rem 3rem 1rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: table;
+  font-weight: bold;
+  -webkit-text-stroke: 0.5px #000;
+  color: #fff;
+  background-color: ${(props) => rgba(props.theme.colors.silver, 0.7)};
+`
+const ThirdRank = styled.h2`
+  padding: 1rem 1rem 3rem 1rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: table;
+  font-weight: bold;
+  -webkit-text-stroke: 0.5px #000;
+  color: #fff;
+  background-color: ${(props) => rgba(props.theme.colors.bronze, 0.7)};
+`
+
+const TopTitle = styled.p`
+  font-size: ${(props) => props.theme.fontSizes.subtitle1};
+  font-weight: bold;
+`
+
+const RankContainer = styled.div`
+  border: 2px solid ${(props) => props.theme.colors.black};
+  margin: 0 2rem;
+`
+
+const RankContent = styled.div`
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid;
+`
+
+const Rank = styled.p`
+  flex: 1;
+  text-align: center;
+`
+
+const RankImage = styled.img`
+  max-width: 7rem;
+  max-height: 7rem;
+  min-width: 5rem;
+  min-height: 5rem;
+  flex: 1;
+  object-fit: cover;
+`
+
+const RankTitle = styled.p`
+  flex: 5;
+  padding-left: 1rem;
+`
+
+const RankCount = styled.p`
+  flex: 1;
+  text-align: center;
+`
+
+const PageRedirect = styled.a`
+  text-decoration: none;
+  color: inherit;
+`
+
 interface TopPageProps {}
 
 const TopPage: React.FC<TopPageProps> = () => {
+  // countの仮置き場として使いたい。
+  // いまはloopするErrorを修正してから使う感じで。
+  // const [hoge, setCount] = useState(0)
+  let test: number = 0
+
+  // dataはaxiosを使って入れる。
+  // const [data, setData] = useState({ datas: []})
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const result = await axios(
+  //       'https://database.url/hoge'
+  //     )
+
+  //     setData(result.data)
+  //   }
+
+  //   fetchData()
+  // }, [])
+
   const data = [
     {
       id: 1,
@@ -54,7 +174,7 @@ const TopPage: React.FC<TopPageProps> = () => {
       count: 5,
     },
     {
-      id: 3,
+      id: 6,
       title: 'グリーンライツ・セレナーデ',
       image: 'https://i.ytimg.com/vi/XSLhsjepelI/maxresdefault.jpg',
       releaseDay: '2018-07-06',
@@ -66,13 +186,62 @@ const TopPage: React.FC<TopPageProps> = () => {
   return (
     <>
       <Header title={'TopPage'} />
-      {data.map((items, index) => {
-        return (
-          <>
-            <p>{}</p>
-          </>
-        )
-      })}
+      <TopRankConatiner>
+        {data.map((items, index) => {
+          return (
+            <>
+              {index < 3 ? (
+                <PageRedirect href={items.link}>
+                  <TopRankContent>
+                    {index === 0 ? (
+                      <FirstRank>{index + 1}</FirstRank>
+                    ) : index === 1 ? (
+                      <SecondRank>{index + 1}</SecondRank>
+                    ) : (
+                      <ThirdRank>{index + 1}</ThirdRank>
+                    )}
+                    <Image src={`${items.image}`} />
+                    <TopTitle>{items.title}</TopTitle>
+                    {/* <p>{items.releaseDay}</p> */}
+                    <p>{items.count}</p>
+                  </TopRankContent>
+                </PageRedirect>
+              ) : null}
+            </>
+          )
+        })}
+      </TopRankConatiner>
+      <RankContainer>
+        {data.map((items, index) => {
+          return (
+            <>
+              {index < 3 ? null : (
+                <PageRedirect href={items.link}>
+                  <RankContent>
+                    {test === items.count ? (
+                      <Rank>{index}</Rank>
+                    ) : (
+                      <Rank>{index + 1}</Rank>
+                    )}
+                    <RankImage src={`${items.image}`} />
+                    <RankTitle>{items.title}</RankTitle>
+                    {/* <p>{items.releaseDay}</p> */}
+                    <RankCount>{(test = items.count)}</RankCount>
+
+                    {/* {setCount(items.count)}
+                  Error: Too many re-renders. React limits the number of renders
+                  to prevent an infinite loop.
+                  ここでitems.countを仮で置いといて、前の奴と同じ場合に
+                  Rankingの番号を同列にする処理を書きたいけど、
+                  loopする。
+                  いい方法が思いついたら修正する。 */}
+                  </RankContent>
+                </PageRedirect>
+              )}
+            </>
+          )
+        })}
+      </RankContainer>
     </>
   )
 }
