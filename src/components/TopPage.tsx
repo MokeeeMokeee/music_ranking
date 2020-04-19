@@ -11,10 +11,16 @@ import Header from './header/Header'
  * styled
  */
 const Image = styled.img`
-  max-width: 10rem;
-  max-height: 10rem;
-  min-width: 10rem;
-  min-height: 10rem;
+  max-width: 15rem;
+  max-height: 15rem;
+  min-width: 15rem;
+  min-height: 15rem;
+  @media screen and (max-width: 800px) {
+    max-width: 20rem;
+    max-height: 20rem;
+    min-width: 20rem;
+    min-height: 20rem;
+  }
   object-fit: cover;
 `
 
@@ -22,10 +28,17 @@ const TopRankConatiner = styled.div`
   display: flex;
   justify-content: space-around;
   margin: 1rem 0;
+  @media screen and (max-width: 800px) {
+    flex-direction: column;
+    align-items:center;
+  }
 `
 
 const TopRankContent = styled.div`
   position: relative;
+  @media screen and (max-width: 800px) {
+    margin-bottom: 1rem;
+  }
 `
 
 const FirstRank = styled.h2`
