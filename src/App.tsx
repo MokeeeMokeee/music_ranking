@@ -1,26 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import * as Theme from './theme/theme'
+import { ThemeProvider, createGlobalStyle } from 'styled-components'
+import reset from 'styled-reset'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useRouteMatch,
+  useParams,
+} from 'react-router-dom'
 
-function App() {
+/*
+* components
+*/
+import TopPage from './components/TopPage'
+
+
+const GlobalStyle = createGlobalStyle`
+  ${reset}
+  /* other styles */
+`
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <ThemeProvider theme={Theme}>
+      <GlobalStyle />
+      <Router>
+        <Switch>
+          <Route path="/">
+            <TopPage />
+          </Route>
+        </Switch>
+      </Router>
+    </ThemeProvider>
+  )
 }
 
-export default App;
+export default App
