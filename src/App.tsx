@@ -11,11 +11,10 @@ import {
   useParams,
 } from 'react-router-dom'
 
-/*
-* components
-*/
+/**
+ * components
+ */
 import TopPage from './components/TopPage'
-
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
