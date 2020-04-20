@@ -30,7 +30,7 @@ const TopRankConatiner = styled.div`
   margin: 1rem 0;
   @media screen and (max-width: 800px) {
     flex-direction: column;
-    align-items:center;
+    align-items: center;
   }
 `
 
@@ -82,7 +82,7 @@ const TopTitle = styled.p`
 
 const RankContainer = styled.div`
   border: 2px solid ${(props) => props.theme.colors.black};
-  margin: 0 2rem;
+  margin: 1rem 2rem;
 `
 
 const RankContent = styled.div`
@@ -91,10 +91,10 @@ const RankContent = styled.div`
   border-bottom: 1px solid;
 `
 
-const Rank = styled.p`
-  flex: 1;
-  text-align: center;
-`
+// const Rank = styled.p`
+//   flex: 1;
+//   text-align: center;
+// `
 
 const RankImage = styled.img`
   max-width: 7rem;
@@ -108,6 +108,8 @@ const RankImage = styled.img`
 const RankTitle = styled.p`
   flex: 5;
   padding-left: 1rem;
+  border: solid ${(props) => props.theme.colors.black};
+  border-width: 0 1px 0 1px;
 `
 
 const RankCount = styled.p`
@@ -118,6 +120,29 @@ const RankCount = styled.p`
 const PageRedirect = styled.a`
   text-decoration: none;
   color: inherit;
+`
+
+const TableHeader = styled.div`
+  display: flex;
+  align-items: center;
+  text-align: center;
+  border-bottom: 2px solid;
+  p {
+    padding: 1rem 0;
+  }
+  p:nth-child(1) {
+    max-width: 7rem;
+    min-width: 5rem;
+    flex: 1;
+  }
+  p:nth-child(2) {
+    flex: 5;
+    border: solid ${(props) => props.theme.colors.black};
+    border-width: 0 2px 0 2px;
+  }
+  p:nth-child(3) {
+    flex: 1;
+  }
 `
 
 interface TopPageProps {}
@@ -233,6 +258,11 @@ const TopPage: React.FC<TopPageProps> = () => {
         })}
       </TopRankConatiner>
       <RankContainer>
+        <TableHeader>
+          <p>サムネ</p>
+          <p>曲名</p>
+          <p>投票数</p>
+        </TableHeader>
         {data.map((items, index) => {
           return (
             <>
