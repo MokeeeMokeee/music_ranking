@@ -194,6 +194,14 @@ const TopPage: React.FC<TopPageProps> = () => {
       link: 'https://www.nicovideo.jp/watch/sm33480697',
       count: 5,
     },
+    {
+      id: 7,
+      title: 'グリーンライツ・セレナーデ',
+      image: 'https://i.ytimg.com/vi/XSLhsjepelI/maxresdefault.jpg',
+      releaseDay: '2018-07-06',
+      link: 'https://www.nicovideo.jp/watch/sm33480697',
+      count: 5,
+    },
   ]
 
   return (
