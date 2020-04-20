@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { rgba } from 'polished'
+import { useHistory } from 'react-router-dom'
 
 /**
  * components
@@ -120,6 +121,7 @@ const RankCount = styled.p`
 const PageRedirect = styled.a`
   text-decoration: none;
   color: inherit;
+  flex: 6;
 `
 
 const TableHeader = styled.div`
@@ -145,6 +147,26 @@ const TableHeader = styled.div`
   }
 `
 
+const ViewContent = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+const AddCounter = styled.button`
+  color: palevioletred;
+  font-size: 1em;
+  padding: 0.25rem;
+  margin-right: 0.5rem;
+  border: 2px solid palevioletred;
+  border-radius: 3px;
+`
+
+const TopRank = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+`
+
 interface TopPageProps {}
 
 const TopPage: React.FC<TopPageProps> = () => {
@@ -152,6 +174,7 @@ const TopPage: React.FC<TopPageProps> = () => {
   // いまはloopするErrorを修正してから使う感じで。
   // const [hoge, setCount] = useState(0)
   let test: number = 0
+  const history = useHistory()
 
   // dataはaxiosを使って入れる。
   // const [data, setData] = useState({ datas: []})
@@ -229,6 +252,14 @@ const TopPage: React.FC<TopPageProps> = () => {
     },
   ]
 
+  function AddCount(hoge: number) {
+    console.log(hoge)
+    console.log(data[hoge - 1].count)
+    data[hoge - 1].count++
+    alert('投票しました')
+    // history.go(0)
+  }
+
   return (
     <>
       <Header title={'TopPage'} />
@@ -237,8 +268,8 @@ const TopPage: React.FC<TopPageProps> = () => {
           return (
             <>
               {index < 3 ? (
-                <PageRedirect href={items.link}>
-                  <TopRankContent>
+                <TopRankContent>
+                  <PageRedirect href={items.link}>
                     {index === 0 ? (
                       <FirstRank>{index + 1}</FirstRank>
                     ) : index === 1 ? (
@@ -249,9 +280,14 @@ const TopPage: React.FC<TopPageProps> = () => {
                     <Image src={`${items.image}`} />
                     <TopTitle>{items.title}</TopTitle>
                     {/* <p>{items.releaseDay}</p> */}
+                  </PageRedirect>
+                  <TopRank>
+                    <AddCounter onClick={() => AddCount(items.id)}>
+                      b
+                    </AddCounter>
                     <p>{items.count}</p>
-                  </TopRankContent>
-                </PageRedirect>
+                  </TopRank>
+                </TopRankContent>
               ) : null}
             </>
           )
@@ -267,27 +303,34 @@ const TopPage: React.FC<TopPageProps> = () => {
           return (
             <>
               {index < 3 ? null : (
-                <PageRedirect href={items.link}>
-                  <RankContent>
-                    {/* {test === items.count ? (
+                <RankContent>
+                  <PageRedirect href={items.link}>
+                    <ViewContent>
+                      {/* {test === items.count ? (
                       <Rank>{index}</Rank>
                     ) : (
                       <Rank>{index + 1}</Rank>
                     )} */}
-                    <RankImage src={`${items.image}`} />
-                    <RankTitle>{items.title}</RankTitle>
-                    {/* <p>{items.releaseDay}</p> */}
-                    <RankCount>{(test = items.count)}</RankCount>
+                      <RankImage src={`${items.image}`} />
+                      <RankTitle>{items.title}</RankTitle>
+                      {/* <p>{items.releaseDay}</p> */}
+                    </ViewContent>
+                  </PageRedirect>
+                  <RankCount>
+                    <AddCounter onClick={() => AddCount(items.id)}>
+                      b
+                    </AddCounter>
+                    {(test = items.count)}
+                  </RankCount>
 
-                    {/* {setCount(items.count)}
+                  {/* {setCount(items.count)}
                   Error: Too many re-renders. React limits the number of renders
                   to prevent an infinite loop.
                   ここでitems.countを仮で置いといて、前の奴と同じ場合に
                   Rankingの番号を同列にする処理を書きたいけど、
                   loopする。
                   いい方法が思いついたら修正する。 */}
-                  </RankContent>
-                </PageRedirect>
+                </RankContent>
               )}
             </>
           )
