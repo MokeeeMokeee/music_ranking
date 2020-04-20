@@ -122,6 +122,8 @@ const Modal: React.FC<ModalProps> = (props) => {
     setTitle('')
     setImage('')
     setUrl('')
+    // title, image, urlで作ってidは自動生成。
+    // countは初期値で0を入れる。
   }
 
   function checkContent() {
