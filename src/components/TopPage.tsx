@@ -239,11 +239,11 @@ const TopPage: React.FC<TopPageProps> = () => {
               {index < 3 ? null : (
                 <PageRedirect href={items.link}>
                   <RankContent>
-                    {test === items.count ? (
+                    {/* {test === items.count ? (
                       <Rank>{index}</Rank>
                     ) : (
                       <Rank>{index + 1}</Rank>
-                    )}
+                    )} */}
                     <RankImage src={`${items.image}`} />
                     <RankTitle>{items.title}</RankTitle>
                     {/* <p>{items.releaseDay}</p> */}
