@@ -30,8 +30,8 @@ const CloseButton = styled.button`
 
 const MainContent = styled.div`
   background-color: ${(props) => props.theme.colors.white};
-  width: 70vw;
-  height: 50vw;
+  width: 26rem;
+  height: 26rem;
   display: flex;
   justify-content: space-around;
   align-items: center;
