@@ -2,6 +2,11 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 
 /**
+ * components
+ */
+import Modal from '../modal/Modal'
+
+/**
  * styled
  */
 const Container = styled.div`
@@ -30,17 +35,17 @@ interface HeaderProps {
   title: string
 }
 
-function modal() {
-  console.log('test')
-}
-
 const Header: React.FC<HeaderProps> = (props) => {
   const [isModalOpen, setModal] = useState(false)
+
+  function modal() {
+    setModal(true)
+  }
   return (
     <Container>
       <p>{props.title}</p>
       <AddButton onClick={() => modal()}>追加</AddButton>
-      {}
+      {isModalOpen ? <Modal /> : null}
     </Container>
   )
 }
