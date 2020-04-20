@@ -45,7 +45,7 @@ const Header: React.FC<HeaderProps> = (props) => {
     <Container>
       <p>{props.title}</p>
       <AddButton onClick={() => modal()}>追加</AddButton>
-      {isModalOpen ? <Modal /> : null}
+      {isModalOpen ? <Modal setModal={setModal} /> : null}
     </Container>
   )
 }
