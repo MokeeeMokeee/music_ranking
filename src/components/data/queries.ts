@@ -1,6 +1,6 @@
 export const dataQuery = `
   query DataQuery {
-    data {
+    data(order_by: {count: desc}) {
       id
       count
       image
