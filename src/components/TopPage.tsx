@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { rgba } from 'polished'
 import { useHistory } from 'react-router-dom'
 import axios from 'axios'
+import { dataQuery } from './data/queries'
 
 /**
  * components
@@ -176,6 +177,7 @@ interface DatasProps {
   image: string
   link: string
   count: number
+  index: number
 }
 
 const TopPage: React.FC<TopPageProps> = () => {
@@ -184,14 +186,20 @@ const TopPage: React.FC<TopPageProps> = () => {
   // const [hoge, setCount] = useState(0)
   let test: number = 0
   const history = useHistory()
-
   // dataはaxiosを使って入れる。
-  const [data, setData] = useState<DatasProps[]>([])
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios('https://database.url/hoge')
+  const [datas, setData] = useState<DatasProps[]>([])
 
-      setData(result.data)
+  useEffect(() => {
+    console.log(dataQuery)
+    const fetchData = async () => {
+      await axios({
+        url: 'https://music-ranking-moke.herokuapp.com/v1/graphql',
+        method: 'post',
+        data: { query: `${dataQuery}` },
+      }).then((result) => {
+        console.log(result.data.data.data)
+        setData(result.data.data.data)
+      })
     }
 
     fetchData()
@@ -265,33 +273,35 @@ const TopPage: React.FC<TopPageProps> = () => {
     <>
       <Header title={'TopPage'} />
       <TopRankConatiner>
-        {data.map((items, index) => {
-          return (
-            <>
-              {index < 3 ? (
-                <TopRankContent>
-                  <PageRedirect href={items.link}>
-                    {index === 0 ? (
-                      <FirstRank>{index + 1}</FirstRank>
-                    ) : index === 1 ? (
-                      <SecondRank>{index + 1}</SecondRank>
-                    ) : (
-                      <ThirdRank>{index + 1}</ThirdRank>
-                    )}
-                    <Image src={`${items.image}`} />
-                    <TopTitle>{items.title}</TopTitle>
-                  </PageRedirect>
-                  <TopRank>
-                    <AddCounter onClick={() => AddCount(items.id)}>
-                      b
-                    </AddCounter>
-                    <p>{items.count}</p>
-                  </TopRank>
-                </TopRankContent>
-              ) : null}
-            </>
-          )
-        })}
+        {datas != null
+          ? datas.map((items, index) => {
+              return (
+                <>
+                  {index < 3 ? (
+                    <TopRankContent>
+                      <PageRedirect href={items.link}>
+                        {index === 0 ? (
+                          <FirstRank>{index + 1}</FirstRank>
+                        ) : index === 1 ? (
+                          <SecondRank>{index + 1}</SecondRank>
+                        ) : (
+                          <ThirdRank>{index + 1}</ThirdRank>
+                        )}
+                        <Image src={`${items.image}`} />
+                        <TopTitle>{items.title}</TopTitle>
+                      </PageRedirect>
+                      <TopRank>
+                        <AddCounter onClick={() => AddCount(items.id)}>
+                          b
+                        </AddCounter>
+                        <p>{items.count}</p>
+                      </TopRank>
+                    </TopRankContent>
+                  ) : null}
+                </>
+              )
+            })
+          : null}
       </TopRankConatiner>
       <RankContainer>
         <TableHeader>
@@ -299,41 +309,30 @@ const TopPage: React.FC<TopPageProps> = () => {
           <p>曲名</p>
           <p>投票数</p>
         </TableHeader>
-        {data.map((items, index) => {
-          return (
-            <>
-              {index < 3 ? null : (
-                <RankContent>
-                  <PageRedirect href={items.link}>
-                    <ViewContent>
-                      {/* {test === items.count ? (
-                      <Rank>{index}</Rank>
-                    ) : (
-                      <Rank>{index + 1}</Rank>
-                    )} */}
-                      <RankImage src={`${items.image}`} />
-                      <RankTitle>{items.title}</RankTitle>
-                    </ViewContent>
-                  </PageRedirect>
-                  <RankCount>
-                    <AddCounter onClick={() => AddCount(items.id)}>
-                      b
-                    </AddCounter>
-                    {(test = items.count)}
-                  </RankCount>
-
-                  {/* {setCount(items.count)}
-                  Error: Too many re-renders. React limits the number of renders
-                  to prevent an infinite loop.
-                  ここでitems.countを仮で置いといて、前の奴と同じ場合に
-                  Rankingの番号を同列にする処理を書きたいけど、
-                  loopする。
-                  いい方法が思いついたら修正する。 */}
-                </RankContent>
-              )}
-            </>
-          )
-        })}
+        {datas != null
+          ? datas.map((items, index) => {
+              return (
+                <>
+                  {index < 3 ? null : (
+                    <RankContent>
+                      <PageRedirect href={items.link}>
+                        <ViewContent>
+                          <RankImage src={`${items.image}`} />
+                          <RankTitle>{items.title}</RankTitle>
+                        </ViewContent>
+                      </PageRedirect>
+                      <RankCount>
+                        <AddCounter onClick={() => AddCount(items.id)}>
+                          b
+                        </AddCounter>
+                        {(test = items.count)}
+                      </RankCount>
+                    </RankContent>
+                  )}
+                </>
+              )
+            })
+          : null}
       </RankContainer>
     </>
   )
