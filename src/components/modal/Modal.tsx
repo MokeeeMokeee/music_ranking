@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { rgba } from 'polished'
+import axios from 'axios'
+import { useHistory } from 'react-router-dom'
+import { print } from 'graphql'
+import gql from 'graphql-tag'
 
 /**
  * styled
@@ -83,6 +87,7 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = (props) => {
+  const history = useHistory()
   const [title, setTitle] = useState('')
   const [image, setImage] = useState('')
   const [url, setUrl] = useState('')
@@ -119,9 +124,58 @@ const Modal: React.FC<ModalProps> = (props) => {
     console.log(`title: ${title}`)
     console.log(`image: ${image}`)
     console.log(`url: ${url}`)
-    setTitle('')
-    setImage('')
-    setUrl('')
+    const InsertData = gql`
+      mutation Insert_data($image: String, $title: String, $url: String) {
+        insert_data(objects: { image: $image, link: $url, title: $title }) {
+          returning {
+            id
+          }
+        }
+      }
+    `
+
+    axios
+      .post('https://music-ranking-moke.herokuapp.com/v1/graphql', {
+        query: print(InsertData),
+        variables: {
+          image: `${image}`,
+          url: `${url}`,
+          title: `${title}`,
+        },
+      })
+      .then((res) => {
+        console.log(res)
+        alert('ok')
+      })
+    // axios.({
+    //   url: 'https://music-ranking-moke.herokuapp.com/v1/graphql',
+    //   method: 'post',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   data: {
+    //     query: `
+    //       mutation {
+    //         insert_data(objects: {image: ${image}, link: ${url}, title: ${title}}) {
+    //           returning {
+    //             id
+    //           }
+    //          }
+    //       }
+    //     `,
+    //   },
+    // })
+    //   .then((result) => {
+    //     console.log(result.data)
+    //     alert('追加した。')
+    //     setTitle('')
+    //     setImage('')
+    //     setUrl('')
+    //     // history.go(0)
+    //   })
+    //   .catch((err) => {
+    //     console.log(err)
+    //   })
     // title, image, urlで作ってidは自動生成。
     // countは初期値で0を入れる。
   }
