@@ -145,7 +145,11 @@ const Modal: React.FC<ModalProps> = (props) => {
       })
       .then((res) => {
         console.log(res)
-        alert('ok')
+        alert('追加した。')
+        setTitle('')
+        setImage('')
+        setUrl('')
+        history.go(0)
       })
     // axios.({
     //   url: 'https://music-ranking-moke.herokuapp.com/v1/graphql',
